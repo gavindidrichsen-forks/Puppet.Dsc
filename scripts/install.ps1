@@ -77,7 +77,7 @@ exit 0
 Import-Module PowerShellGet -ErrorAction Stop
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Write-Host "Installing $($PowerShellModules.Count) modules with Install-Module"
-exit 0
+
 ForEach ($Module in $PowerShellModules) {
 $InstalledModuleVersions = Get-Module -ListAvailable $Module.Name -ErrorAction SilentlyContinue |
   Select-Object -ExpandProperty Version
