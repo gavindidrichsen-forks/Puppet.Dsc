@@ -3,6 +3,7 @@ Param(
   [switch]$Full
 )
 
+Write-Host 'Installing Puppet DSC dependencies'
 $ErrorActionPreference = 'Stop'
 
 $PowerShellModules = @(
@@ -45,6 +46,7 @@ Import-Module C:\ProgramData\chocolatey\helpers\chocolateyProfile.psm1
 Update-SessionEnvironment
 
 Write-Host "Installing $($PowerShellModules.Count) modules with Install-Module"
+Import-Module PowerShellGet -ErrorAction Stop
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 ForEach ($Module in $PowerShellModules) {
   $InstalledModuleVersions = Get-Module -ListAvailable $Module.Name -ErrorAction SilentlyContinue |
@@ -55,10 +57,14 @@ ForEach ($Module in $PowerShellModules) {
     $AlreadyInstalled = $null -ne $InstalledModuleVersions
   }
   If ($AlreadyInstalled) {
-    Write-Verbose "Skipping $($Module.Name) as it is already installed at $($InstalledModuleVersions)"
+    Write-Host "Skipping $($Module.Name) as it is already installed at $($InstalledModuleVersions)"
   } Else {
-    Write-Verbose "Installing $($Module.Name)"
-    Install-Module @Module -Force -SkipPublisherCheck -AllowClobber
+    Write-Host "Installing $($Module.Name)"
+    try {
+      Install-Module @Module -SkipPublisherCheck -AllowClobber
+    } catch {
+      Write-Host "Failed to install $($Module.Name), retrying with -Force"
+      Install-Module @Module -Force -SkipPublisherCheck -AllowClobber
+    }
   }
 }
-
