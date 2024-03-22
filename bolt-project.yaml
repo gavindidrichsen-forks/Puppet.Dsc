@@ -1,0 +1,9 @@
+---
+name: puppet_dsc
+modules: []
+plans:
+  - puppet_dsc::*
+tasks:
+  - puppet_dsc::*
+disable-warnings:
+  - project_shadows_module

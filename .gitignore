@@ -6,3 +6,4 @@ import
 !docs/about_*
 Puppet.Dsc/
 !src/Puppet.Dsc/
+inventory.yaml
