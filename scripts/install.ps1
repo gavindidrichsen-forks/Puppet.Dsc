@@ -71,7 +71,7 @@ Get-ExecutionPolicy
 $env:USERPROFILE
 whoami
 Write-Host "######## Available Modules"
-Get-Module -ListAvailable
+# Get-Module -ListAvailable
 exit 0
 
 Import-Module PowerShellGet -ErrorAction Stop
